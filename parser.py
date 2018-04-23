@@ -6,6 +6,7 @@ import the_best_functions as tbf
 from firebase import firebase
 from del_nt import del_nt
 from take_banks import take_banks
+from parse_cotir import parse_cotir
 
 BASE_URL = 'https://www.open.ru/deposits?from=main_menu#aim14'
 vklad_obj = {}
@@ -178,12 +179,17 @@ def main():
     parse(get_html('http://www.banki.ru/products/credits/ussury/'), 'ussury', all_kredits)
     parse(get_html('http://www.banki.ru/products/credits/homecreditbank/'), 'homecreditbank', all_kredits)
 
-    vklad_obj['vklads'] = all_vklads
-    kredit_obj['kredits'] = all_kredits
+    all_cotir = parse_cotir()
+    cotir_obj = {
+        'cotirovki': all_cotir
+    }
+    vklad_obj['vklads'] = tbf.sort_dict(all_vklads, True)
+    kredit_obj['kredits'] = tbf.sort_dict(all_kredits, False)
     banks_obj['banks'] = take_banks(all_vklads, all_kredits)
     firebase.put('', 'all_vklads', vklad_obj)
     firebase.put('', 'all_kredits', kredit_obj)
     firebase.put('', 'all_banks', banks_obj)
+    firebase.put('', 'all_cotir', cotir_obj)
     print(len(all_vklads))
 
 

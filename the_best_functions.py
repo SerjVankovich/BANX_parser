@@ -1,4 +1,7 @@
 # Лучшая функция, сделанная мною когда-либо
+from operator import itemgetter
+
+
 def get_float(string):
     # Меняем все запятые на точки, чтобы привести к 'float'
     string = string.replace(',', '.')
@@ -33,13 +36,15 @@ def get_float(string):
         return float(form_string)
     except ValueError:
         return None
-        
+
+
 def del_num(string):
-    formatString = ''
+    format_string = ''
     for letter in string:
         if not letter.isdigit() and letter not in [' ', '.', ',']:
-            formatString += letter
-    return formatString
+            format_string += letter
+    return format_string
+
 
 def isMes(string):
     prom_string = del_num(string)
@@ -48,6 +53,7 @@ def isMes(string):
     else:
         return False
 
+
 def isDay(string):
     prom_string = del_num(string)
     if prom_string in ['дней', 'дня', 'день']:
@@ -55,6 +61,19 @@ def isDay(string):
     else:
         return False
 
+
 def isYear(string):
     prom_string = del_num(string)
     return prom_string in ['год', 'года', 'лет']
+
+
+def sort_dict(list_dict, is_reverse):
+    dicts = []
+    for dict in list_dict:
+        if 'perinrub' in dict.keys():
+            dicts.append(dict)
+    dicts = sorted(dicts, key=itemgetter('perinrub'), reverse=is_reverse)
+    return dicts
+
+
+
