@@ -1,9 +1,12 @@
-#The func which build dict with banks
+# The func which build dict with banks
+
 
 def take_banks(array_vklads, array_cont):
     banks_array = []
 
     banks_names = get_banks_names(array_vklads)
+    banks_names = list(set(banks_names + get_banks_names(array_cont)))
+    print(banks_names)
     for name in banks_names:
         bank = Bank(name)
         banks_array.append(bank)
@@ -14,12 +17,15 @@ def take_banks(array_vklads, array_cont):
                 id = banks_names.index(dict[key])
                 banks_array[id].len_vklads += 1
 
-
     for dict in array_cont:
         for key in dict.keys():
             if key == 'bank':
-                id = banks_names.index(dict[key])
-                banks_array[id].len_kred += 1
+                try:
+                    id = banks_names.index(dict[key])
+                    banks_array[id].len_kred += 1
+                except ValueError:
+                    pass
+
     array = []
     for bank in banks_array:
         dict = {
@@ -29,12 +35,7 @@ def take_banks(array_vklads, array_cont):
         }
         array.append(dict)
 
-
     return array
-
-
-
-
 
 
 def get_banks_names(array):
@@ -44,6 +45,7 @@ def get_banks_names(array):
             if dict['bank'] not in names:
                 names.append(dict['bank'])
     return names
+
 
 class Bank():
     def __init__(self, bank):
